@@ -5,20 +5,15 @@ import com.clinicaodontologica.app.clinicaodontologica.entities.Odontologo;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoServicio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.implServicios.OdontologoServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/odontologo")
+@RequestMapping("/odontologo")
 public class OdontologoController {
-
-
     private final OdontologoServicio odontologoServicio;
 
     @Autowired
@@ -26,10 +21,33 @@ public class OdontologoController {
         this.odontologoServicio = odontologoServicioImpl;
     }
 
-     @PostMapping
-    public OdontologoDTO crearOdontologo (@RequestBody OdontologoDTO odontologoDTO) throws SQLException, ClassNotFoundException {
+    @GetMapping
+    public List<OdontologoDTO> buscarTodosOdontologos(){
+        return odontologoServicio.listar();
+    }
+
+    @GetMapping("/{idOdontologo}")
+    public OdontologoDTO buscarOdontologoPorId(@PathVariable Integer idOdontologo){
+        return odontologoServicio.buscarPorId(idOdontologo);
+    }
+
+    @GetMapping("/buscarPorMatricula/{matricula}")
+    public OdontologoDTO buscarOdontologoPorMatricula(@PathVariable String matricula){
+        return odontologoServicio.buscarPorUnicaMarticula(matricula);
+    }
+
+    @PostMapping
+    public OdontologoDTO crearOdontologo(@RequestBody OdontologoDTO odontologoDTO) {
         return odontologoServicio.crear(odontologoDTO);
     }
 
+    @PutMapping
+    public OdontologoDTO modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO) {
+        return odontologoServicio.modificar(odontologoDTO);
+    }
 
+    @DeleteMapping("/eliminar/{idOdontologo}")
+    public void eliminarOdontologo(@PathVariable Integer idOdontologo) {
+        odontologoServicio.eliminar(idOdontologo);
+    }
 }

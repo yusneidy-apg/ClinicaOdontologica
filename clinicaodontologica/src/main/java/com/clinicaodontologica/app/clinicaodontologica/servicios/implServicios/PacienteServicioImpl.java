@@ -10,19 +10,17 @@ import java.util.List;
 
 @Service
 public class PacienteServicioImpl implements PacienteServicio {
-    private PacienteRepositorio pacienteRepositorio;
+    private final PacienteRepositorio pacienteRepositorio;
 
     @Autowired
     public PacienteServicioImpl(PacienteRepositorio pacienteRepositorio) {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
-
     @Override
     public PacienteDTO crear(PacienteDTO pacienteDTO) {
         return null;
     }
-
     @Override
     public PacienteDTO modificar(PacienteDTO pacienteDTO) {
         return null;

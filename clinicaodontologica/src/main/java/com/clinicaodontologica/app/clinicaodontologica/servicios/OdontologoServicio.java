@@ -7,6 +7,8 @@ import java.util.List;
 public interface OdontologoServicio {
     OdontologoDTO crear(OdontologoDTO odontologoDTO);
     OdontologoDTO modificar(OdontologoDTO odontologoDTO);
+    OdontologoDTO buscarPorId(Integer idOdontologo);
     List<OdontologoDTO> listar();
     void eliminar(int id);
+    OdontologoDTO buscarPorUnicaMarticula(String matricula);
 }
