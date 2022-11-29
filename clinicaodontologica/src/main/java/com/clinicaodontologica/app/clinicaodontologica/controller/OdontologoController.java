@@ -1,14 +1,11 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
 import com.clinicaodontologica.app.clinicaodontologica.dto.OdontologoDTO;
-import com.clinicaodontologica.app.clinicaodontologica.entities.Odontologo;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoServicio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.implServicios.OdontologoServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
