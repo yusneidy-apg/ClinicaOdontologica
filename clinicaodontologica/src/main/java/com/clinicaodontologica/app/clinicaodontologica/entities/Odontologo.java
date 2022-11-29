@@ -1,7 +1,14 @@
-package com.clinicaodontologica.app.clinicaodontologica.modelos;
+package com.clinicaodontologica.app.clinicaodontologica.entities;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table (name = "Odontologo")
 public class Odontologo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idOdontologo;
     private String nombre;
     private String apellido;

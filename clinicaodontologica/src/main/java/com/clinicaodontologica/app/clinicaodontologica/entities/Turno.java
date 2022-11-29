@@ -1,9 +1,14 @@
-package com.clinicaodontologica.app.clinicaodontologica.modelos;
+package com.clinicaodontologica.app.clinicaodontologica.entities;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Turno")
 public class Turno {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTurno;
     private int idOdontologo;
     private int idPaciente;

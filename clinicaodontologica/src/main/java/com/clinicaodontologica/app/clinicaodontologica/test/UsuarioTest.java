@@ -1,6 +1,6 @@
 package com.clinicaodontologica.app.clinicaodontologica.test;
 
-import com.clinicaodontologica.app.clinicaodontologica.modelos.Usuario;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

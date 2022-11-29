@@ -1,9 +1,9 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
 
-import com.clinicaodontologica.app.clinicaodontologica.modelos.Turno;
-import com.clinicaodontologica.app.clinicaodontologica.servicios.PacienteService;
-import com.clinicaodontologica.app.clinicaodontologica.servicios.TurnoService;
+import com.clinicaodontologica.app.clinicaodontologica.dto.TurnoDTO;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Turno;
+import com.clinicaodontologica.app.clinicaodontologica.servicios.TurnoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +15,15 @@ import java.sql.SQLException;
 @RequestMapping("/turno")
 public class TurnoController {
 
-    private final TurnoService turnoService;
+    private final TurnoServicio turnoServicio;
 
     @Autowired
-    public TurnoController(TurnoService turnoService) {
-        this.turnoService = turnoService;
+    public TurnoController(TurnoServicio turnoServicio) {
+        this.turnoServicio = turnoServicio;
     }
     @RequestMapping
-    public Turno crearTurno (@RequestBody Turno turno) throws SQLException, ClassNotFoundException {
-        return turnoService.guardarTurno(turno);
+    public TurnoDTO crearTurno (@RequestBody TurnoDTO turnoDTO) throws SQLException, ClassNotFoundException {
+        return turnoServicio.crear(turnoDTO);
     }
 
 }

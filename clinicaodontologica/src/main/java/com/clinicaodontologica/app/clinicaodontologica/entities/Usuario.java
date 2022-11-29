@@ -1,11 +1,26 @@
-package com.clinicaodontologica.app.clinicaodontologica.modelos;
+package com.clinicaodontologica.app.clinicaodontologica.entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Usuario")
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idUsuario;
     private String usuario;
     private String contasenia;
     private String rol;
     private boolean activo;
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     public String getUsuario() {
         return usuario;

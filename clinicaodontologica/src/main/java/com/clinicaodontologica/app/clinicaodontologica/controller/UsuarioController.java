@@ -1,8 +1,9 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
 
-import com.clinicaodontologica.app.clinicaodontologica.modelos.Usuario;
-import com.clinicaodontologica.app.clinicaodontologica.servicios.UsuarioService;
+import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
+import com.clinicaodontologica.app.clinicaodontologica.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,15 +16,15 @@ import java.sql.SQLException;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
+    private final UsuarioServicio usuarioServicio;
 
     @Autowired
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public UsuarioController(UsuarioServicio usuarioServicio) {
+        this.usuarioServicio = usuarioServicio;
     }
 
     @PostMapping
-    public Usuario crearUsuario (@RequestBody Usuario usuario) throws SQLException, ClassNotFoundException {
-        return usuarioService.guardarUsuario(usuario);
+    public UsuarioDTO crearUsuario (@RequestBody UsuarioDTO usuarioDTO) throws SQLException, ClassNotFoundException {
+        return usuarioServicio.crear(usuarioDTO);
     }
 }

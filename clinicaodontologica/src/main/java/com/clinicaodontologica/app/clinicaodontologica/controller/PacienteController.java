@@ -1,9 +1,9 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
 
-import com.clinicaodontologica.app.clinicaodontologica.modelos.Paciente;
-import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoService;
-import com.clinicaodontologica.app.clinicaodontologica.servicios.PacienteService;
+import com.clinicaodontologica.app.clinicaodontologica.dto.PacienteDTO;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Paciente;
+import com.clinicaodontologica.app.clinicaodontologica.servicios.PacienteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,14 +17,14 @@ import java.sql.SQLException;
 
 public class PacienteController {
 
-    private final PacienteService pacienteService;
+    private final PacienteServicio pacienteServicio;
 
     @Autowired
-    public PacienteController(PacienteService pacienteService) {
-        this.pacienteService = pacienteService;
+    public PacienteController(PacienteServicio pacienteServicio) {
+        this.pacienteServicio = pacienteServicio;
     }
     @PostMapping
-    public Paciente crearPaciente (@RequestBody Paciente paciente) throws SQLException, ClassNotFoundException {
-      return pacienteService.guardarPaciente(paciente);
+    public PacienteDTO crearPaciente (@RequestBody PacienteDTO pacienteDTO) throws SQLException, ClassNotFoundException {
+      return pacienteServicio.crear(pacienteDTO);
     }
 }

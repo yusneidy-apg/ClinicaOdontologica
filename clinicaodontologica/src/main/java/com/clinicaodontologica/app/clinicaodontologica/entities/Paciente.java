@@ -1,13 +1,17 @@
-package com.clinicaodontologica.app.clinicaodontologica.modelos;
+package com.clinicaodontologica.app.clinicaodontologica.entities;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-
+@Entity
+@Table(name = "Paciente")
 public class Paciente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPaciente;
     private String nombre;
     private String apellido;
-    private String domicilio;
+    private String domicilio; //Pendiente revisar que hacer con el domicilio
     private String dni;
     private LocalDateTime fechaAlta;
 

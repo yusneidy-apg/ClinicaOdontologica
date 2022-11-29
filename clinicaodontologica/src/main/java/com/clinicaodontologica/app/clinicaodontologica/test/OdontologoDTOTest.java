@@ -1,8 +1,7 @@
 package com.clinicaodontologica.app.clinicaodontologica.test;
 
 import com.clinicaodontologica.app.clinicaodontologica.dao.implementacion_dao.OdontologoDaoImpH2;
-import com.clinicaodontologica.app.clinicaodontologica.modelos.Odontologo;
-import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoService;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Odontologo;
 import org.junit.Test;
 
 import java.sql.SQLException;

@@ -2,7 +2,7 @@ package com.clinicaodontologica.app.clinicaodontologica.test;
 
 
 
-import com.clinicaodontologica.app.clinicaodontologica.modelos.Turno;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Turno;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
