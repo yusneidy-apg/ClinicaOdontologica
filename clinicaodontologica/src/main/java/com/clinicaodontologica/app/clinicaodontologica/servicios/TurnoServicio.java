@@ -9,6 +9,8 @@ public interface TurnoServicio {
 
     TurnoDTO crear(TurnoDTO turnoDTO);
     TurnoDTO modificar(TurnoDTO turnoDTO);
+    TurnoDTO buscarPorId(Integer idTurno);
     List<TurnoDTO> listar();
     void eliminar(int id);
+    TurnoDTO buscarPorUnicoIdTurno(int idTurno);
 }

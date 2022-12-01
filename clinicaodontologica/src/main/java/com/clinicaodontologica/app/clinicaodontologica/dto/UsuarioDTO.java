@@ -6,10 +6,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioDTO {
 
+    private int idUsuario;
     private String usuario;
     private String contasenia;
     private String rol;
     private boolean activo;
+
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     public String getUsuario() {
         return usuario;
