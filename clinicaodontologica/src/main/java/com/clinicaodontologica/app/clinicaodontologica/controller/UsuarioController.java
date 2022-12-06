@@ -1,7 +1,5 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
-
-import com.clinicaodontologica.app.clinicaodontologica.dto.PacienteDTO;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;

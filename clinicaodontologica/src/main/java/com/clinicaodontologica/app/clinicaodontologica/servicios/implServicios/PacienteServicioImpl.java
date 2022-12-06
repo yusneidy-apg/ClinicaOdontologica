@@ -5,6 +5,7 @@ import com.clinicaodontologica.app.clinicaodontologica.entities.Paciente;
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.PacienteRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.PacienteServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
     @Override
     public PacienteDTO crear(PacienteDTO pacienteDTO) {
+        mapper.registerModule(new JavaTimeModule());
         Paciente paciente = mapper.convertValue(pacienteDTO, Paciente.class);
         PacienteDTO pacienteGuardado = buscarPorUnicoIdPaciente(pacienteDTO.getIdPaciente()); //Podria ser que lo busque por el DNI?
         if(pacienteGuardado != null)
