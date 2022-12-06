@@ -26,8 +26,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
     @Override
     public PacienteDTO crear(PacienteDTO pacienteDTO) {
-        mapper.registerModule(new JavaTimeModule());
-        Paciente paciente = mapper.convertValue(pacienteDTO, Paciente.class);
+        Paciente paciente = mapper.registerModule(new JavaTimeModule()).convertValue(pacienteDTO, Paciente.class);
         PacienteDTO pacienteGuardado = buscarPorUnicoIdPaciente(pacienteDTO.getIdPaciente()); //Podria ser que lo busque por el DNI?
         if(pacienteGuardado != null)
             paciente.setIdPaciente(pacienteGuardado.getIdPaciente());

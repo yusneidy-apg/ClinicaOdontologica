@@ -5,6 +5,7 @@ import com.clinicaodontologica.app.clinicaodontologica.entities.Turno;
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.TurnoRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.TurnoServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class TurnoServicioImpl implements TurnoServicio {
 
     @Override
     public TurnoDTO crear(TurnoDTO turnoDTO) {
-        Turno turno = mapper.convertValue(turnoDTO, Turno.class);
+        Turno turno = mapper.registerModule(new JavaTimeModule()).convertValue(turnoDTO, Turno.class);
         TurnoDTO turnoGuardado = buscarPorUnicoIdTurno(turnoDTO.getIdTurno());
         if(turnoGuardado !=null)
             turno.setIdTurno(turnoGuardado.getIdTurno());
