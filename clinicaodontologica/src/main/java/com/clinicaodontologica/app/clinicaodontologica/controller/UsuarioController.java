@@ -21,7 +21,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public UsuarioDTO crearUsuario (@RequestBody UsuarioDTO usuarioDTO) throws NoEncontradoException {
+    public UsuarioDTO crearUsuario (@RequestBody UsuarioDTO usuarioDTO)  {
         return usuarioServicio.crear(usuarioDTO);
     }
     @GetMapping
@@ -30,17 +30,17 @@ public class UsuarioController {
     }
 
     @GetMapping("/{idUsuario}")
-    public UsuarioDTO buscarUsuarioPorId(@PathVariable Integer idUsuario) {
+    public UsuarioDTO buscarUsuarioPorId(@PathVariable Integer idUsuario) throws NoEncontradoException {
         return usuarioServicio.buscarPorId(idUsuario);
     }
 
     @GetMapping("/buscarPorUsuario/{usuario}")
-    public UsuarioDTO buscarPorUsuario(@PathVariable String usuario) throws NoEncontradoException {
+    public UsuarioDTO buscarPorUsuario(@PathVariable String usuario)  {
         return usuarioServicio.buscarPorUnicoUsuario(usuario);
     }
 
     @PutMapping
-    public UsuarioDTO modificarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws NoEncontradoException {
+    public UsuarioDTO modificarUsuario(@RequestBody UsuarioDTO usuarioDTO)  {
         return usuarioServicio.modificar(usuarioDTO);
     }
 

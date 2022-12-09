@@ -24,7 +24,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         this.usuarioRepositorio = usuarioRepositorio;
     }
     @Override
-    public UsuarioDTO crear(UsuarioDTO usuarioDTO) throws NoEncontradoException {
+    public UsuarioDTO crear(UsuarioDTO usuarioDTO)  {
         Usuario usuario = mapper.convertValue(usuarioDTO, Usuario.class);
         UsuarioDTO usuarioGuardado = buscarPorUnicoUsuario(usuarioDTO.getUsuario());
         if (usuarioGuardado != null)
@@ -33,12 +33,16 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public UsuarioDTO modificar(UsuarioDTO usuarioDTO) throws NoEncontradoException {
+    public UsuarioDTO modificar(UsuarioDTO usuarioDTO)  {
         return crear(usuarioDTO);
     }
 
     @Override
-    public UsuarioDTO buscarPorId (Integer idUsuario) {
+    public UsuarioDTO buscarPorId (Integer idUsuario) throws NoEncontradoException {
+        Usuario usuarioGuardado = usuarioRepositorio.findById(idUsuario).orElse(null);
+        if(usuarioGuardado == null){
+            throw new NoEncontradoException("El usuario con el id " + idUsuario + " no fuen encontrado en la base de datos");
+        }
         return mapper.convertValue(usuarioRepositorio.findById(idUsuario).orElse(new Usuario()), UsuarioDTO.class);
     }
 
@@ -59,11 +63,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public UsuarioDTO buscarPorUnicoUsuario(String usuario) throws NoEncontradoException {
-        Usuario usuarioGuardado = usuarioRepositorio.findByUsuario(usuario);
-        if(usuarioGuardado == null){
-            throw new NoEncontradoException("El usuario " + usuario + " no fuen encontrado en la base de datos");
-        }
-        return mapper.convertValue(usuarioGuardado, UsuarioDTO.class);
+    public UsuarioDTO buscarPorUnicoUsuario(String usuario)  {
+        return mapper.convertValue(usuarioRepositorio.findByUsuario(usuario), UsuarioDTO.class);
     }
 }

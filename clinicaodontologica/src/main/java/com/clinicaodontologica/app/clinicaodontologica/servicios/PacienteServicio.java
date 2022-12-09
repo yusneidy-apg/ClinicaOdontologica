@@ -6,11 +6,11 @@ import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoE
 import java.util.List;
 
 public interface PacienteServicio {
-    PacienteDTO crear(PacienteDTO pacienteDTO) throws NoEncontradoException;
-    PacienteDTO modificar(PacienteDTO pacienteDTO) throws NoEncontradoException;
-    PacienteDTO bucarPorId(Integer idPaciente);
+    PacienteDTO crear(PacienteDTO pacienteDTO);
+    PacienteDTO modificar(PacienteDTO pacienteDTO);
+    PacienteDTO bucarPorId(Integer idPaciente) throws NoEncontradoException;
     List<PacienteDTO> listar();
     void eliminar(int id);
-    PacienteDTO buscarPorUnicoDni(String dni) throws NoEncontradoException;
+    PacienteDTO buscarPorUnicoDni(String dni);
 
 }

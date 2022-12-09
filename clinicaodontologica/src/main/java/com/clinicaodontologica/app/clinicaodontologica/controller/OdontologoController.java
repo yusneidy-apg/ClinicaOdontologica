@@ -25,22 +25,22 @@ public class OdontologoController {
     }
 
     @GetMapping("/{idOdontologo}")
-    public OdontologoDTO buscarOdontologoPorId(@PathVariable Integer idOdontologo){
+    public OdontologoDTO buscarOdontologoPorId(@PathVariable Integer idOdontologo) throws NoEncontradoException {
         return odontologoServicio.buscarPorId(idOdontologo);
     }
 
     @GetMapping("/buscarPorMatricula/{matricula}")
-    public OdontologoDTO buscarOdontologoPorMatricula(@PathVariable String matricula) throws NoEncontradoException {
+    public OdontologoDTO buscarOdontologoPorMatricula(@PathVariable String matricula) {
         return odontologoServicio.buscarPorUnicaMarticula(matricula);
     }
 
     @PostMapping
-    public OdontologoDTO crearOdontologo(@RequestBody OdontologoDTO odontologoDTO) throws NoEncontradoException {
+    public OdontologoDTO crearOdontologo(@RequestBody OdontologoDTO odontologoDTO) {
         return odontologoServicio.crear(odontologoDTO);
     }
 
     @PutMapping
-    public OdontologoDTO modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO) throws NoEncontradoException {
+    public OdontologoDTO modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO) {
         return odontologoServicio.modificar(odontologoDTO);
     }
 

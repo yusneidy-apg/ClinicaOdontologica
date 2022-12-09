@@ -26,7 +26,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
 
     @Override
-    public PacienteDTO crear(PacienteDTO pacienteDTO) throws NoEncontradoException {
+    public PacienteDTO crear(PacienteDTO pacienteDTO) {
         Paciente paciente = mapper.registerModule(new JavaTimeModule()).convertValue(pacienteDTO, Paciente.class);
         PacienteDTO pacienteGuardado = buscarPorUnicoDni(pacienteDTO.getDni());
         if(pacienteGuardado != null)
@@ -36,13 +36,17 @@ public class PacienteServicioImpl implements PacienteServicio {
 
 
     @Override
-    public PacienteDTO modificar(PacienteDTO pacienteDTO) throws NoEncontradoException {
+    public PacienteDTO modificar(PacienteDTO pacienteDTO){
         return crear(pacienteDTO);
     }
 
     @Override
-    public PacienteDTO bucarPorId(Integer idPaciente){
-        return mapper.convertValue(pacienteRepositorio.findById(idPaciente).orElse(new Paciente()), PacienteDTO.class);
+    public PacienteDTO bucarPorId(Integer idPaciente) throws NoEncontradoException {
+        Paciente pacienteGuardado = pacienteRepositorio.findById(idPaciente).orElse(null);
+        if(pacienteGuardado == null){
+            throw new NoEncontradoException("El paciente con el id " + idPaciente +  " no fue encontrado en la base de datos");
+        }
+        return mapper.convertValue(pacienteGuardado, PacienteDTO.class);
     }
 
 
@@ -62,11 +66,7 @@ public class PacienteServicioImpl implements PacienteServicio {
     }
 
     @Override
-    public PacienteDTO buscarPorUnicoDni(String dni) throws NoEncontradoException {
-        Paciente pacienteGuardado = pacienteRepositorio.findByDni(dni);
-        if(pacienteGuardado == null){
-            throw new NoEncontradoException("El paciente con el dni" + dni +  " no fue encontrado en la base de datos");
-        }
-        return mapper.convertValue(pacienteGuardado, PacienteDTO.class);
+    public PacienteDTO buscarPorUnicoDni(String dni) {
+        return mapper.convertValue(pacienteRepositorio.findByDni(dni), PacienteDTO.class);
     }
 }

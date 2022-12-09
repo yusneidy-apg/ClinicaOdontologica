@@ -23,7 +23,7 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     @Override
-    public OdontologoDTO crear(OdontologoDTO odontologoDTO) throws NoEncontradoException {
+    public OdontologoDTO crear(OdontologoDTO odontologoDTO) {
         Odontologo odontologo = mapper.convertValue(odontologoDTO, Odontologo.class);
         OdontologoDTO odontologoGuardado = buscarPorUnicaMarticula(odontologoDTO.getMatricula());
         if (odontologoGuardado != null)
@@ -32,12 +32,16 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     @Override
-    public OdontologoDTO modificar(OdontologoDTO odontologoDTO) throws NoEncontradoException {
+    public OdontologoDTO modificar(OdontologoDTO odontologoDTO) {
         return crear(odontologoDTO);
     }
 
     @Override
-    public OdontologoDTO buscarPorId(Integer idOdontologo) {
+    public OdontologoDTO buscarPorId(Integer idOdontologo) throws NoEncontradoException {
+        Odontologo odontologoGuardado = odontologoRepositorio.findById(idOdontologo).orElse(null);
+        if (odontologoGuardado == null) {
+            throw new NoEncontradoException("El Odontólogo con el id " + idOdontologo + " no fue encontrado en la base de datos");
+        }
         return mapper.convertValue(odontologoRepositorio.findById(idOdontologo).orElse(new Odontologo()), OdontologoDTO.class);
     }
 
@@ -57,11 +61,7 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     @Override
-    public OdontologoDTO buscarPorUnicaMarticula(String matricula) throws NoEncontradoException {
-        Odontologo odontologoGuardado = odontologoRepositorio.findByMatricula(matricula);
-        if (odontologoGuardado == null) {
-            throw new NoEncontradoException("El Odontólogo con la matricula" + matricula + " no fue encontrado en la base de datos");
-        }
-        return mapper.convertValue(odontologoGuardado, OdontologoDTO.class);
+    public OdontologoDTO buscarPorUnicaMarticula(String matricula) {
+        return mapper.convertValue(odontologoRepositorio.findByMatricula(matricula), OdontologoDTO.class);
     }
 }

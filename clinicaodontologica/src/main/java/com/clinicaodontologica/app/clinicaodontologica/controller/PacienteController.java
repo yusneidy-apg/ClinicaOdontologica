@@ -20,7 +20,7 @@ public class PacienteController {
         this.pacienteServicio = pacienteServicio;
     }
     @PostMapping
-    public PacienteDTO crearPaciente (@RequestBody PacienteDTO pacienteDTO) throws NoEncontradoException {
+    public PacienteDTO crearPaciente (@RequestBody PacienteDTO pacienteDTO) {
         return pacienteServicio.crear(pacienteDTO);
     }
     @GetMapping
@@ -29,19 +29,19 @@ public class PacienteController {
     }
 
     @GetMapping("/{idPaciente}")
-    public PacienteDTO buscarPacientePorId(@PathVariable Integer idPaciente) {
+    public PacienteDTO buscarPacientePorId(@PathVariable Integer idPaciente) throws NoEncontradoException {
         return pacienteServicio.bucarPorId(idPaciente);
     }
 
     @GetMapping("/buscarPorUnicoIdPaciente/{idpaciente}")
-    public PacienteDTO buscarPorUnicoIdPaciente(@PathVariable String dni) throws NoEncontradoException {
+    public PacienteDTO buscarPorUnicoIdPaciente(@PathVariable String dni){
         return pacienteServicio.buscarPorUnicoDni(dni);
     }
 
 
 
     @PutMapping
-    public PacienteDTO modificarOdontologo(@RequestBody PacienteDTO pacienteDTO) throws NoEncontradoException {
+    public PacienteDTO modificarOdontologo(@RequestBody PacienteDTO pacienteDTO) {
         return pacienteServicio.modificar(pacienteDTO);
     }
 
