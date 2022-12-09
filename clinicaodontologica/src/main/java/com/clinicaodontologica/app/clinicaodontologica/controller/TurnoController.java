@@ -5,7 +5,7 @@ import com.clinicaodontologica.app.clinicaodontologica.servicios.TurnoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
+
 import java.util.List;
 
 @RestController
@@ -19,7 +19,7 @@ public class TurnoController {
         this.turnoServicio = turnoServicio;
     }
     @RequestMapping
-    public TurnoDTO crearTurno (@RequestBody TurnoDTO turnoDTO) throws SQLException, ClassNotFoundException {
+    public TurnoDTO crearTurno (@RequestBody TurnoDTO turnoDTO){
         return turnoServicio.crear(turnoDTO);
     }
 

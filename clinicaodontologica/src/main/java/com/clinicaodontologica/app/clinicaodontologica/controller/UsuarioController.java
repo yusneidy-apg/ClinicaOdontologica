@@ -1,11 +1,12 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
+import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
+
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public UsuarioDTO crearUsuario (@RequestBody UsuarioDTO usuarioDTO) throws SQLException, ClassNotFoundException {
+    public UsuarioDTO crearUsuario (@RequestBody UsuarioDTO usuarioDTO) throws NoEncontradoException {
         return usuarioServicio.crear(usuarioDTO);
     }
     @GetMapping
@@ -33,13 +34,13 @@ public class UsuarioController {
         return usuarioServicio.buscarPorId(idUsuario);
     }
 
-    @GetMapping("/buscarPorUnicoIdUsuario/{idUsuario}")
-    public UsuarioDTO buscarPorUnicoIdUsuario(@PathVariable Integer idUsuario){ // podria buscarlo por DNI?
-        return usuarioServicio.buscarPorUnicoIdUsuario(idUsuario);
+    @GetMapping("/buscarPorUsuario/{usuario}")
+    public UsuarioDTO buscarPorUsuario(@PathVariable String usuario) throws NoEncontradoException {
+        return usuarioServicio.buscarPorUnicoUsuario(usuario);
     }
 
     @PutMapping
-    public UsuarioDTO modificarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public UsuarioDTO modificarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws NoEncontradoException {
         return usuarioServicio.modificar(usuarioDTO);
     }
 

@@ -2,6 +2,7 @@ package com.clinicaodontologica.app.clinicaodontologica.servicios.implServicios;
 
 import com.clinicaodontologica.app.clinicaodontologica.dto.OdontologoDTO;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Odontologo;
+import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.OdontologoRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +23,7 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     @Override
-    public OdontologoDTO crear(OdontologoDTO odontologoDTO) {
+    public OdontologoDTO crear(OdontologoDTO odontologoDTO) throws NoEncontradoException {
         Odontologo odontologo = mapper.convertValue(odontologoDTO, Odontologo.class);
         OdontologoDTO odontologoGuardado = buscarPorUnicaMarticula(odontologoDTO.getMatricula());
         if (odontologoGuardado != null)
@@ -31,7 +32,7 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     @Override
-    public OdontologoDTO modificar(OdontologoDTO odontologoDTO) {
+    public OdontologoDTO modificar(OdontologoDTO odontologoDTO) throws NoEncontradoException {
         return crear(odontologoDTO);
     }
 
@@ -56,7 +57,11 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     @Override
-    public OdontologoDTO buscarPorUnicaMarticula(String matricula) {
-        return mapper.convertValue(odontologoRepositorio.findByMatricula(matricula), OdontologoDTO.class);
+    public OdontologoDTO buscarPorUnicaMarticula(String matricula) throws NoEncontradoException {
+        Odontologo odontologoGuardado = odontologoRepositorio.findByMatricula(matricula);
+        if (odontologoGuardado == null) {
+            throw new NoEncontradoException("El Odontólogo con la matricula" + matricula + " no fue encontrado en la base de datos");
+        }
+        return mapper.convertValue(odontologoGuardado, OdontologoDTO.class);
     }
 }

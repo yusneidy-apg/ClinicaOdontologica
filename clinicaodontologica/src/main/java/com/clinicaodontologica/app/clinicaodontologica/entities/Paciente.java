@@ -11,7 +11,7 @@ public class Paciente {
     private int idPaciente;
     private String nombre;
     private String apellido;
-    private String domicilio; //Pendiente revisar que hacer con el domicilio
+    private String domicilio;
     private String dni;
     private LocalDateTime fechaAlta;
 

@@ -2,6 +2,7 @@ package com.clinicaodontologica.app.clinicaodontologica.servicios.implServicios;
 
 import com.clinicaodontologica.app.clinicaodontologica.dto.PacienteDTO;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Paciente;
+import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.PacienteRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.PacienteServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +26,9 @@ public class PacienteServicioImpl implements PacienteServicio {
 
 
     @Override
-    public PacienteDTO crear(PacienteDTO pacienteDTO) {
+    public PacienteDTO crear(PacienteDTO pacienteDTO) throws NoEncontradoException {
         Paciente paciente = mapper.registerModule(new JavaTimeModule()).convertValue(pacienteDTO, Paciente.class);
-        PacienteDTO pacienteGuardado = buscarPorUnicoIdPaciente(pacienteDTO.getIdPaciente()); //Podria ser que lo busque por el DNI?
+        PacienteDTO pacienteGuardado = buscarPorUnicoDni(pacienteDTO.getDni());
         if(pacienteGuardado != null)
             paciente.setIdPaciente(pacienteGuardado.getIdPaciente());
         return mapper.convertValue(pacienteRepositorio.save(paciente), PacienteDTO.class);
@@ -35,7 +36,7 @@ public class PacienteServicioImpl implements PacienteServicio {
 
 
     @Override
-    public PacienteDTO modificar(PacienteDTO pacienteDTO) {
+    public PacienteDTO modificar(PacienteDTO pacienteDTO) throws NoEncontradoException {
         return crear(pacienteDTO);
     }
 
@@ -60,7 +61,12 @@ public class PacienteServicioImpl implements PacienteServicio {
         pacienteRepositorio.deleteById(id);
     }
 
-    public PacienteDTO buscarPorUnicoIdPaciente(int idPaciente) {
-        return mapper.convertValue(pacienteRepositorio.findById(idPaciente), PacienteDTO.class);
+    @Override
+    public PacienteDTO buscarPorUnicoDni(String dni) throws NoEncontradoException {
+        Paciente pacienteGuardado = pacienteRepositorio.findByDni(dni);
+        if(pacienteGuardado == null){
+            throw new NoEncontradoException("El paciente con el dni" + dni +  " no fue encontrado en la base de datos");
+        }
+        return mapper.convertValue(pacienteGuardado, PacienteDTO.class);
     }
 }

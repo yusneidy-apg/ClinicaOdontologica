@@ -1,6 +1,7 @@
 package com.clinicaodontologica.app.clinicaodontologica.controller;
 
 import com.clinicaodontologica.app.clinicaodontologica.dto.OdontologoDTO;
+import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoServicio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.implServicios.OdontologoServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,17 @@ public class OdontologoController {
     }
 
     @GetMapping("/buscarPorMatricula/{matricula}")
-    public OdontologoDTO buscarOdontologoPorMatricula(@PathVariable String matricula){
+    public OdontologoDTO buscarOdontologoPorMatricula(@PathVariable String matricula) throws NoEncontradoException {
         return odontologoServicio.buscarPorUnicaMarticula(matricula);
     }
 
     @PostMapping
-    public OdontologoDTO crearOdontologo(@RequestBody OdontologoDTO odontologoDTO) {
+    public OdontologoDTO crearOdontologo(@RequestBody OdontologoDTO odontologoDTO) throws NoEncontradoException {
         return odontologoServicio.crear(odontologoDTO);
     }
 
     @PutMapping
-    public OdontologoDTO modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO) {
+    public OdontologoDTO modificarOdontologo(@RequestBody OdontologoDTO odontologoDTO) throws NoEncontradoException {
         return odontologoServicio.modificar(odontologoDTO);
     }
 
