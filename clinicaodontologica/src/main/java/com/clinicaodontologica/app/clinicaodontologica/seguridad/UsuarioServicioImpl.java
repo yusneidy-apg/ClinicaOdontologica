@@ -1,20 +1,24 @@
-package com.clinicaodontologica.app.clinicaodontologica.servicios.implServicios;
+package com.clinicaodontologica.app.clinicaodontologica.seguridad;
 
 
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
+import com.clinicaodontologica.app.clinicaodontologica.excepciones.RecursoCreadoException;
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.UsuarioRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.UsuarioServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UsuarioServicioImpl implements UsuarioServicio {
+public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService {
 
     ObjectMapper mapper = new ObjectMapper();
     private final UsuarioRepositorio usuarioRepositorio;
@@ -24,17 +28,22 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         this.usuarioRepositorio = usuarioRepositorio;
     }
     @Override
-    public UsuarioDTO crear(UsuarioDTO usuarioDTO)  {
+    public UsuarioDTO crear(UsuarioDTO usuarioDTO) throws RecursoCreadoException {
         Usuario usuario = mapper.convertValue(usuarioDTO, Usuario.class);
         UsuarioDTO usuarioGuardado = buscarPorUnicoUsuario(usuarioDTO.getUsuario());
         if (usuarioGuardado != null)
-            usuario.setIdUsuario(usuarioGuardado.getIdUsuario());
+            throw new RecursoCreadoException("¡El usuario " + usuarioGuardado.getUsuario() + " ya se encuentra creado!");
         return  mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioDTO.class);
     }
 
     @Override
-    public UsuarioDTO modificar(UsuarioDTO usuarioDTO)  {
-        return crear(usuarioDTO);
+    public UsuarioDTO modificar(UsuarioDTO usuarioDTO) throws NoEncontradoException {
+        UsuarioDTO usuarioGuardado = buscarPorId(usuarioDTO.getIdUsuario());
+        usuarioGuardado.setUsuario(usuarioDTO.getUsuario());
+        usuarioGuardado.setContasenia(usuarioDTO.getContasenia());
+        usuarioGuardado.setRol(usuarioDTO.getRol());
+        usuarioGuardado.setActivo(usuarioDTO.getActivo());
+        return mapper.convertValue(usuarioRepositorio.save(mapper.convertValue(usuarioGuardado, Usuario.class)), UsuarioDTO.class);
     }
 
     @Override
@@ -65,5 +74,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public UsuarioDTO buscarPorUnicoUsuario(String usuario)  {
         return mapper.convertValue(usuarioRepositorio.findByUsuario(usuario), UsuarioDTO.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepositorio.findByUsuario(username);
     }
 }

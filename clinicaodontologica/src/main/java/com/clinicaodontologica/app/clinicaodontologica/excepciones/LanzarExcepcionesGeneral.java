@@ -11,4 +11,9 @@ public class LanzarExcepcionesGeneral {
     public ResponseEntity<String> procesoExcepcionBadRequest(NoEncontradoException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler({RecursoCreadoException.class})
+    public ResponseEntity<String> procesoExcepcionBadRequest(RecursoCreadoException e) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(e.getMessage());
+    }
 }
