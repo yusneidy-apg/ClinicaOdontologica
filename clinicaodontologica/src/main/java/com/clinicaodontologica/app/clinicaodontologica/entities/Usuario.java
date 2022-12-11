@@ -5,8 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @Entity
 @Table(name = "Usuario")
@@ -17,8 +16,15 @@ public class Usuario implements UserDetails {
     private int idUsuario;
     private String usuario;
     private String contrasenia;
-    private String rol;
     private boolean activo;
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+            name="USUARIOSROLES",
+            joinColumns = @JoinColumn(name ="idUsuario"),
+            inverseJoinColumns = @JoinColumn(name="idRol")
+    )
+    private Set<Roles> roles;
 
     public int getIdUsuario() {
         return idUsuario;
@@ -44,15 +50,6 @@ public class Usuario implements UserDetails {
         this.contrasenia = contasenia;
     }
 
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
     public boolean getActivo() {
         return activo;
     }
@@ -61,10 +58,23 @@ public class Usuario implements UserDetails {
         this.activo = activo;
     }
 
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(rol);
-        return Collections.singleton(grantedAuthority);
+        Set<GrantedAuthority> autorizaciones = new HashSet<>();
+        GrantedAuthority autorizacion;
+        if(roles != null && !roles.isEmpty()){
+            for (Roles rol : roles) {
+                autorizacion = new SimpleGrantedAuthority(rol.getNombre());
+                autorizaciones.add(autorizacion);
+            }
+        }
+        return autorizaciones;
     }
 
     @Override

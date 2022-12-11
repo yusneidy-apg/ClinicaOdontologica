@@ -1,7 +1,10 @@
 package com.clinicaodontologica.app.clinicaodontologica.dto;
 
 
+import com.clinicaodontologica.app.clinicaodontologica.entities.Roles;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioDTO {
@@ -9,8 +12,8 @@ public class UsuarioDTO {
     private int idUsuario;
     private String usuario;
     private String contrasenia;
-    private String rol;
     private boolean activo;
+    private Set<Roles> roles;
 
 
     public int getIdUsuario() {
@@ -37,14 +40,6 @@ public class UsuarioDTO {
         this.contrasenia = contrasenia;
     }
 
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
     public boolean getActivo() {
         return activo;
     }
@@ -53,4 +48,11 @@ public class UsuarioDTO {
         this.activo = activo;
     }
 
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 }

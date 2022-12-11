@@ -4,6 +4,7 @@ package com.clinicaodontologica.app.clinicaodontologica.seguridad;
 import com.clinicaodontologica.app.clinicaodontologica.controller.UsuarioController;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioParcialDTO;
+import com.clinicaodontologica.app.clinicaodontologica.entities.Roles;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.RecursoCreadoException;
@@ -61,7 +62,6 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
         UsuarioDTO usuarioGuardado = buscarPorId(usuarioDTO.getIdUsuario());
         usuarioGuardado.setUsuario(usuarioDTO.getUsuario());
         usuarioGuardado.setContrasenia(usuarioDTO.getContrasenia());
-        usuarioGuardado.setRol(usuarioDTO.getRol());
         usuarioGuardado.setActivo(usuarioDTO.getActivo());
         return mapper.convertValue(usuarioRepositorio.save(mapper.convertValue(usuarioGuardado, Usuario.class)), UsuarioDTO.class);
     }
@@ -100,8 +100,11 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepositorio.findByUsuario(username);
         Set<GrantedAuthority> autorizaciones = new HashSet<>();
-        GrantedAuthority autorizacion = new SimpleGrantedAuthority(usuario.getRol());
-        autorizaciones.add(autorizacion);
+        GrantedAuthority autorizacion;
+        for (Roles rol : usuario.getRoles()) {
+            autorizacion = new SimpleGrantedAuthority(rol.getNombre());
+            autorizaciones.add(autorizacion);
+        }
         User userDetail =
                 new User(
                         usuario.getUsername(),
