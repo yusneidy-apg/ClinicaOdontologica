@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +34,13 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
 
     ObjectMapper mapper = new ObjectMapper();
     private final UsuarioRepositorio usuarioRepositorio;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio) {
+    public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio, PasswordEncoder passwordEncoder) {
         this.usuarioRepositorio = usuarioRepositorio;
-        //this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -53,8 +52,8 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
             throw new RecursoCreadoException("¡El usuario " + usuarioGuardado.getUsuario() + " ya se encuentra creado!");
         }
 /*      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String contra = passwordEncoder.encode(usuario.getContrasenia());
-        usuario.setContrasenia(contra);*/
+        String contra = passwordEncoder.encode(usuario.getContrasenia());*/
+        usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         LOGGER.info("¡Usuario creado con éxito!");
         return mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioParcialDTO.class);
     }
