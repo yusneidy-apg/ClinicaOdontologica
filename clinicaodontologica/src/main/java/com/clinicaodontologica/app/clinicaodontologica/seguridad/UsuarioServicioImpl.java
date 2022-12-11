@@ -1,6 +1,7 @@
 package com.clinicaodontologica.app.clinicaodontologica.seguridad;
 
 
+import com.clinicaodontologica.app.clinicaodontologica.controller.UsuarioController;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
@@ -8,6 +9,8 @@ import com.clinicaodontologica.app.clinicaodontologica.excepciones.RecursoCreado
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.UsuarioRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.UsuarioServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +23,8 @@ import java.util.List;
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService {
 
+    private static final Logger LOGGER = LogManager.getLogger(UsuarioController.class);
+
     ObjectMapper mapper = new ObjectMapper();
     private final UsuarioRepositorio usuarioRepositorio;
 
@@ -27,13 +32,17 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
     public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
     }
+
     @Override
     public UsuarioDTO crear(UsuarioDTO usuarioDTO) throws RecursoCreadoException {
         Usuario usuario = mapper.convertValue(usuarioDTO, Usuario.class);
         UsuarioDTO usuarioGuardado = buscarPorUnicoUsuario(usuarioDTO.getUsuario());
-        if (usuarioGuardado != null)
+        if (usuarioGuardado != null) {
+            LOGGER.warn("¡Usuario " + usuarioGuardado.getUsuario() +  " ya creado!");
             throw new RecursoCreadoException("¡El usuario " + usuarioGuardado.getUsuario() + " ya se encuentra creado!");
-        return  mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioDTO.class);
+        }
+        LOGGER.info("¡Usuario creado con exito!");
+        return mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioDTO.class);
     }
 
     @Override
@@ -47,10 +56,10 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
     }
 
     @Override
-    public UsuarioDTO buscarPorId (Integer idUsuario) throws NoEncontradoException {
+    public UsuarioDTO buscarPorId(Integer idUsuario) throws NoEncontradoException {
         Usuario usuarioGuardado = usuarioRepositorio.findById(idUsuario).orElse(null);
-        if(usuarioGuardado == null){
-            throw new NoEncontradoException("El usuario con el id " + idUsuario + " no fuen encontrado en la base de datos");
+        if (usuarioGuardado == null) {
+            throw new NoEncontradoException("El usuario con el id " + idUsuario + " no fue encontrado en la base de datos");
         }
         return mapper.convertValue(usuarioRepositorio.findById(idUsuario).orElse(new Usuario()), UsuarioDTO.class);
     }
@@ -72,7 +81,7 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
     }
 
     @Override
-    public UsuarioDTO buscarPorUnicoUsuario(String usuario)  {
+    public UsuarioDTO buscarPorUnicoUsuario(String usuario) {
         return mapper.convertValue(usuarioRepositorio.findByUsuario(usuario), UsuarioDTO.class);
     }
 
