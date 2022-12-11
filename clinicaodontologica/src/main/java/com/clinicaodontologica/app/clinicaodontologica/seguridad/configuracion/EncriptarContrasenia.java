@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EncriptarContrasenia {
     @Bean
-    public PasswordEncoder encoder() {
+    public PasswordEncoder codificar() {
         return new BCryptPasswordEncoder();
     }
 }

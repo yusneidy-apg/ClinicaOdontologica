@@ -5,6 +5,7 @@ import com.clinicaodontologica.app.clinicaodontologica.seguridad.jwt.FiltroJwtPe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,14 +24,14 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
 
     private final FiltroJwtPeticion filtroJwtPeticion;
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder codificar;
 
 
     @Autowired
-    public ConfiguracionSeguridad(UsuarioServicioImpl usuarioServicio, FiltroJwtPeticion filtroJwtPeticion, PasswordEncoder passwordEncoder) {
+    public ConfiguracionSeguridad(UsuarioServicioImpl usuarioServicio, FiltroJwtPeticion filtroJwtPeticion, PasswordEncoder codificar) {
         this.usuarioServicio = usuarioServicio;
         this.filtroJwtPeticion = filtroJwtPeticion;
-        this.passwordEncoder = passwordEncoder;
+        this.codificar = codificar;
     }
 
     @Override
@@ -43,7 +43,8 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/usuario/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/usuario/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/usuario").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .and().headers().frameOptions().sameOrigin()
                 .and().authorizeRequests()
@@ -51,7 +52,7 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(filtroJwtPeticion, UsernamePasswordAuthenticationFilter.class);;
+        http.addFilterBefore(filtroJwtPeticion, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -61,9 +62,9 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
+        provider.setPasswordEncoder(codificar);
         provider.setUserDetailsService(usuarioServicio);
         return provider;
     }

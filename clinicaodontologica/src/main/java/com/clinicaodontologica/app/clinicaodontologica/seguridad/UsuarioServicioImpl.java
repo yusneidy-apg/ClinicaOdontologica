@@ -34,13 +34,13 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
 
     ObjectMapper mapper = new ObjectMapper();
     private final UsuarioRepositorio usuarioRepositorio;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder codificar;
 
 
     @Autowired
-    public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio, PasswordEncoder passwordEncoder) {
+    public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio, PasswordEncoder codificar) {
         this.usuarioRepositorio = usuarioRepositorio;
-        this.passwordEncoder = passwordEncoder;
+        this.codificar = codificar;
     }
 
     @Override
@@ -51,9 +51,7 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
             LOGGER.warn("¡Usuario " + usuarioGuardado.getUsuario() +  " ya creado!");
             throw new RecursoCreadoException("¡El usuario " + usuarioGuardado.getUsuario() + " ya se encuentra creado!");
         }
-/*      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String contra = passwordEncoder.encode(usuario.getContrasenia());*/
-        usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
+        usuario.setContrasenia(codificar.encode(usuario.getContrasenia()));
         LOGGER.info("¡Usuario creado con éxito!");
         return mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioParcialDTO.class);
     }
