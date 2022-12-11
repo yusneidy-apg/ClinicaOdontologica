@@ -16,7 +16,7 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
     private String usuario;
-    private String contasenia;
+    private String contrasenia;
     private String rol;
     private boolean activo;
 
@@ -36,12 +36,12 @@ public class Usuario implements UserDetails {
         this.usuario = usuario;
     }
 
-    public String getContasenia() {
-        return contasenia;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setContasenia(String contasenia) {
-        this.contasenia = contasenia;
+    public void setContrasenia(String contasenia) {
+        this.contrasenia = contasenia;
     }
 
 
@@ -69,7 +69,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return contasenia;
+        return contrasenia;
     }
 
     @Override

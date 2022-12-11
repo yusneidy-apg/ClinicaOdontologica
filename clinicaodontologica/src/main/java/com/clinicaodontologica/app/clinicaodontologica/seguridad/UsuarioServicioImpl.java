@@ -3,6 +3,7 @@ package com.clinicaodontologica.app.clinicaodontologica.seguridad;
 
 import com.clinicaodontologica.app.clinicaodontologica.controller.UsuarioController;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
+import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioParcialDTO;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.RecursoCreadoException;
@@ -12,13 +13,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService {
@@ -27,29 +35,35 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
 
     ObjectMapper mapper = new ObjectMapper();
     private final UsuarioRepositorio usuarioRepositorio;
+    //private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public UsuarioServicioImpl(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
+        //this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UsuarioDTO crear(UsuarioDTO usuarioDTO) throws RecursoCreadoException {
+    public UsuarioParcialDTO crear(UsuarioDTO usuarioDTO) throws RecursoCreadoException {
         Usuario usuario = mapper.convertValue(usuarioDTO, Usuario.class);
         UsuarioDTO usuarioGuardado = buscarPorUnicoUsuario(usuarioDTO.getUsuario());
         if (usuarioGuardado != null) {
             LOGGER.warn("¡Usuario " + usuarioGuardado.getUsuario() +  " ya creado!");
             throw new RecursoCreadoException("¡El usuario " + usuarioGuardado.getUsuario() + " ya se encuentra creado!");
         }
-        LOGGER.info("¡Usuario creado con exito!");
-        return mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioDTO.class);
+/*      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String contra = passwordEncoder.encode(usuario.getContrasenia());
+        usuario.setContrasenia(contra);*/
+        LOGGER.info("¡Usuario creado con éxito!");
+        return mapper.convertValue(usuarioRepositorio.save(usuario), UsuarioParcialDTO.class);
     }
 
     @Override
     public UsuarioDTO modificar(UsuarioDTO usuarioDTO) throws NoEncontradoException {
         UsuarioDTO usuarioGuardado = buscarPorId(usuarioDTO.getIdUsuario());
         usuarioGuardado.setUsuario(usuarioDTO.getUsuario());
-        usuarioGuardado.setContasenia(usuarioDTO.getContasenia());
+        usuarioGuardado.setContrasenia(usuarioDTO.getContrasenia());
         usuarioGuardado.setRol(usuarioDTO.getRol());
         usuarioGuardado.setActivo(usuarioDTO.getActivo());
         return mapper.convertValue(usuarioRepositorio.save(mapper.convertValue(usuarioGuardado, Usuario.class)), UsuarioDTO.class);
@@ -87,6 +101,19 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepositorio.findByUsuario(username);
+        Usuario usuario = usuarioRepositorio.findByUsuario(username);
+        Set<GrantedAuthority> autorizaciones = new HashSet<>();
+        GrantedAuthority autorizacion = new SimpleGrantedAuthority(usuario.getRol());
+        autorizaciones.add(autorizacion);
+        User userDetail =
+                new User(
+                        usuario.getUsername(),
+                        usuario.getPassword(),
+                        usuario.getActivo(),
+                        true,
+                        true,
+                        true,
+                        autorizaciones);
+        return userDetail;
     }
 }

@@ -4,11 +4,10 @@ package com.clinicaodontologica.app.clinicaodontologica.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UsuarioDTO {
+public class UsuarioParcialDTO {
 
     private int idUsuario;
     private String usuario;
-    private String contrasenia;
     private String rol;
     private boolean activo;
 
@@ -29,13 +28,6 @@ public class UsuarioDTO {
         this.usuario = usuario;
     }
 
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
 
     public String getRol() {
         return rol;
