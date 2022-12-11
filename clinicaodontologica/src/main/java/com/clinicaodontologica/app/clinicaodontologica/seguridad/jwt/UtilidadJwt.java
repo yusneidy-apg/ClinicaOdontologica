@@ -45,7 +45,7 @@ public class UtilidadJwt {
 
     private String crearToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(1).toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(10).toInstant()))
                 .signWith(SignatureAlgorithm.HS256, CLAVE_SECRETA).compact();
     }
 
