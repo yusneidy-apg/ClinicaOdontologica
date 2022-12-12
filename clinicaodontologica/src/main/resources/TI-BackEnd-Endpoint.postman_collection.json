@@ -256,6 +256,128 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "odontologoPorId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvMiIsImV4cCI6MTY3MDg3MTM1MiwiaWF0IjoxNjcwODcwNzUyfQ.fGS2EjmF-EpBNnUh0wEP-Kr7MIphb1InnqZjzu_kf64",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/odontologo/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"odontologo",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pacienteDni",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvMiIsImV4cCI6MTY3MDg3MTk2NSwiaWF0IjoxNjcwODcxMzY1fQ.6mn5huh7h9AVe0Qg-D9XxK8ctzGTPKkTt8JrqIkFFKI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/paciente/dni/123456789",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"paciente",
+						"dni",
+						"123456789"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "odontologoMatricula",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvMiIsImV4cCI6MTY3MDg3MTk2NSwiaWF0IjoxNjcwODcxMzY1fQ.6mn5huh7h9AVe0Qg-D9XxK8ctzGTPKkTt8JrqIkFFKI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/odontologo/matricula/J123456987",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"odontologo",
+						"matricula",
+						"J123456987"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "turnoIdTurno",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3VhcmlvMiIsImV4cCI6MTY3MDg3MTk2NSwiaWF0IjoxNjcwODcxMzY1fQ.6mn5huh7h9AVe0Qg-D9XxK8ctzGTPKkTt8JrqIkFFKI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/turno/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"turno",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
