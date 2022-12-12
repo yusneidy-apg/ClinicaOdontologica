@@ -29,7 +29,7 @@ public class OdontologoController {
         return odontologoServicio.buscarPorId(idOdontologo);
     }
 
-    @GetMapping("/buscarPorMatricula/{matricula}")
+    @GetMapping("/matricula/{matricula}")
     public OdontologoDTO buscarOdontologoPorMatricula(@PathVariable String matricula) {
         return odontologoServicio.buscarPorUnicaMarticula(matricula);
     }

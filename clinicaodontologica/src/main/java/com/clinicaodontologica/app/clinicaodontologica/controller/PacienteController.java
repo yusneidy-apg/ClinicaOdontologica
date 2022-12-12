@@ -32,11 +32,10 @@ public class PacienteController {
         return pacienteServicio.bucarPorId(idPaciente);
     }
 
-    @GetMapping("/buscarPorUnicoIdPaciente/{idpaciente}")
-    public PacienteDTO buscarPorUnicoIdPaciente(@PathVariable String dni){
+    @GetMapping("/dni/{dni}")
+    public PacienteDTO buscarPorUnicoDni(@PathVariable String dni){
         return pacienteServicio.buscarPorUnicoDni(dni);
     }
-
 
 
     @PutMapping

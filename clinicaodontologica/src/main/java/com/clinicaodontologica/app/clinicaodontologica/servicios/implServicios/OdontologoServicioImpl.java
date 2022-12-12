@@ -6,6 +6,7 @@ import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoE
 import com.clinicaodontologica.app.clinicaodontologica.repositorio.OdontologoRepositorio;
 import com.clinicaodontologica.app.clinicaodontologica.servicios.OdontologoServicio;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class OdontologoServicioImpl implements OdontologoServicio {
         if (odontologoGuardado == null) {
             throw new NoEncontradoException("El Odontólogo con el id " + idOdontologo + " no fue encontrado en la base de datos");
         }
-        return mapper.convertValue(odontologoRepositorio.findById(idOdontologo).orElse(new Odontologo()), OdontologoDTO.class);
+        return mapper.registerModule(new JavaTimeModule()).convertValue(odontologoRepositorio.findById(idOdontologo).orElse(new Odontologo()), OdontologoDTO.class);
     }
 
     @Override

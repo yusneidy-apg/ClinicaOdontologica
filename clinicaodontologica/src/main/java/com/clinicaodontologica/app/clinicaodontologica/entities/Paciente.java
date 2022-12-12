@@ -1,18 +1,25 @@
 package com.clinicaodontologica.app.clinicaodontologica.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "Paciente")
-public class Paciente {
+public class Paciente implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdPaciente")
     private int idPaciente;
+    @Column(name = "Nombre")
     private String nombre;
+    @Column(name = "Apellido")
     private String apellido;
+    @Column(name = "Domicilio")
     private String domicilio;
+    @Column(name = "Dni")
     private String dni;
+    @Column(name = "FechaAlta")
     private LocalDateTime fechaAlta;
 
     public Paciente() {

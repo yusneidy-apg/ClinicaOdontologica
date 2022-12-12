@@ -13,9 +13,13 @@ public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdUsuario")
     private int idUsuario;
+    @Column(name = "usuario")
     private String usuario;
+    @Column(name = "contrasenia")
     private String contrasenia;
+    @Column(name = "activo")
     private boolean activo;
 
     @OneToOne(fetch = FetchType.EAGER)

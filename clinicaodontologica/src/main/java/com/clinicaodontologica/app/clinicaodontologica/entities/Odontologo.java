@@ -2,16 +2,21 @@ package com.clinicaodontologica.app.clinicaodontologica.entities;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table (name = "Odontologo")
-public class Odontologo {
+public class Odontologo implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdOdontologo")
     private int idOdontologo;
+    @Column(name = "Nombre")
     private String nombre;
+    @Column(name = "Apellido")
     private String apellido;
+    @Column(name = "Matricula")
     private String matricula;
 
     public Odontologo() {

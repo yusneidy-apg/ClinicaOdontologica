@@ -9,10 +9,22 @@ public class Turno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdTurno")
     private int idTurno;
+    @Column(name = "IdOdontologo")
     private int idOdontologo;
+    @Column(name = "IdPaciente")
     private int idPaciente;
+    @Column(name = "FechaTurno")
     private LocalDateTime fechaTurno;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "IdOdontologo", referencedColumnName = "IdOdontologo", insertable = false, updatable = false)
+    private Odontologo odontologo;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "IdPaciente", referencedColumnName = "IdPaciente", insertable = false, updatable = false)
+    private Paciente paciente;
 
     public Turno() {
     }
@@ -54,5 +66,21 @@ public class Turno {
 
     public void setFechaTurno(LocalDateTime fechaTurno) {
         this.fechaTurno = fechaTurno;
+    }
+
+    public Odontologo getOdontologo() {
+        return odontologo;
+    }
+
+    public void setOdontologo(Odontologo odontologo) {
+        this.odontologo = odontologo;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

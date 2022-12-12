@@ -12,6 +12,8 @@ public class TurnoDTO {
     private int idOdontologo;
     private int idPaciente;
     private LocalDateTime fechaTurno;
+    private OdontologoDTO odontologo;
+    private PacienteDTO paciente;
 
     public TurnoDTO() {
     }
@@ -53,5 +55,21 @@ public class TurnoDTO {
 
     public void setFechaTurno(LocalDateTime fechaTurno) {
         this.fechaTurno = fechaTurno;
+    }
+
+    public OdontologoDTO getOdontologo() {
+        return odontologo;
+    }
+
+    public void setOdontologo(OdontologoDTO odontologo) {
+        this.odontologo = odontologo;
+    }
+
+    public PacienteDTO getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteDTO paciente) {
+        this.paciente = paciente;
     }
 }

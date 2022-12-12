@@ -46,7 +46,7 @@ public class PacienteServicioImpl implements PacienteServicio {
         if(pacienteGuardado == null){
             throw new NoEncontradoException("El paciente con el id " + idPaciente +  " no fue encontrado en la base de datos");
         }
-        return mapper.convertValue(pacienteGuardado, PacienteDTO.class);
+        return mapper.registerModule(new JavaTimeModule()).convertValue(pacienteGuardado, PacienteDTO.class);
     }
 
 
@@ -67,6 +67,6 @@ public class PacienteServicioImpl implements PacienteServicio {
 
     @Override
     public PacienteDTO buscarPorUnicoDni(String dni) {
-        return mapper.convertValue(pacienteRepositorio.findByDni(dni), PacienteDTO.class);
+        return mapper.registerModule(new JavaTimeModule()).convertValue(pacienteRepositorio.findByDni(dni), PacienteDTO.class);
     }
 }

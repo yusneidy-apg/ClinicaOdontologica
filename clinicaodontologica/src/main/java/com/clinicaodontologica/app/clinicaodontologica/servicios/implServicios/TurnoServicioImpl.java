@@ -40,7 +40,7 @@ public class TurnoServicioImpl implements TurnoServicio {
     }
     @Override
     public TurnoDTO buscarPorId(Integer idTurno) {
-        return mapper.convertValue(turnoRepositorio.findById(idTurno).orElse(new Turno()), TurnoDTO.class);
+        return mapper.registerModule(new JavaTimeModule()).convertValue(turnoRepositorio.findById(idTurno).orElse(new Turno()), TurnoDTO.class);
     }
 
     @Override
