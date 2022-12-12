@@ -1,6 +1,6 @@
 package com.clinicaodontologica.app.clinicaodontologica.dto;
 
-public class RolesDTO {
+public class RolDTO {
     private Integer idRol;
     private String nombre;
 

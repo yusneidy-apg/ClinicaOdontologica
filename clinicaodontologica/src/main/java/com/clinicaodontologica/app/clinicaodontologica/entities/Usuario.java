@@ -18,13 +18,13 @@ public class Usuario implements UserDetails {
     private String contrasenia;
     private boolean activo;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinTable(
-            name="USUARIOSROLES",
-            joinColumns = @JoinColumn(name ="idUsuario"),
-            inverseJoinColumns = @JoinColumn(name="idRol")
+            name = "USUARIOSROLES",
+            joinColumns = @JoinColumn(name = "idUsuario"),
+            inverseJoinColumns = @JoinColumn(name = "idRol")
     )
-    private Set<Roles> roles;
+    private Rol rol;
 
     public int getIdUsuario() {
         return idUsuario;
@@ -58,23 +58,20 @@ public class Usuario implements UserDetails {
         this.activo = activo;
     }
 
-    public Set<Roles> getRoles() {
-        return roles;
+    public Rol getRol() {
+        return rol;
     }
-    public void setRoles(Set<Roles> roles) {
-        this.roles = roles;
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> autorizaciones = new HashSet<>();
-        GrantedAuthority autorizacion;
-        if(roles != null && !roles.isEmpty()){
-            for (Roles rol : roles) {
-                autorizacion = new SimpleGrantedAuthority(rol.getNombre());
-                autorizaciones.add(autorizacion);
-            }
+        if (rol != null) {
+            return Collections.singletonList(new SimpleGrantedAuthority(rol.getNombre()));
         }
-        return autorizaciones;
+        return Collections.emptyList();
     }
 
     @Override

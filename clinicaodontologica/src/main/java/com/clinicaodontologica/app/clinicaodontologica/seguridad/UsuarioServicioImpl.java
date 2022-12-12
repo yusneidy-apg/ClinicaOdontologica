@@ -4,7 +4,6 @@ package com.clinicaodontologica.app.clinicaodontologica.seguridad;
 import com.clinicaodontologica.app.clinicaodontologica.controller.UsuarioController;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioDTO;
 import com.clinicaodontologica.app.clinicaodontologica.dto.UsuarioParcialDTO;
-import com.clinicaodontologica.app.clinicaodontologica.entities.Roles;
 import com.clinicaodontologica.app.clinicaodontologica.entities.Usuario;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.NoEncontradoException;
 import com.clinicaodontologica.app.clinicaodontologica.excepciones.RecursoCreadoException;
@@ -14,8 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,9 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService {
@@ -99,12 +94,6 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepositorio.findByUsuario(username);
-        Set<GrantedAuthority> autorizaciones = new HashSet<>();
-        GrantedAuthority autorizacion;
-        for (Roles rol : usuario.getRoles()) {
-            autorizacion = new SimpleGrantedAuthority(rol.getNombre());
-            autorizaciones.add(autorizacion);
-        }
         User userDetail =
                 new User(
                         usuario.getUsername(),
@@ -113,7 +102,7 @@ public class UsuarioServicioImpl implements UsuarioServicio, UserDetailsService 
                         true,
                         true,
                         true,
-                        autorizaciones);
+                        usuario.getAuthorities());
         return userDetail;
     }
 }
